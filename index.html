@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delicious Recipe Hub - Full-Stack Recipe System with AI Chef</title>
+    <meta name="description" content="Discover, create, and generate gourmet recipes using our full-stack PHP/MySQL recipe management system powered by an AI Chef assistant.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar" id="top-nav">
+        <div class="nav-container">
+            <a href="#home" class="nav-logo">
+                <span class="logo-icon"><i class="fa-solid fa-utensils"></i></span>
+                <span class="logo-text">Delicious<span class="highlight">Hub</span></span>
+            </a>
+
+            <nav class="nav-menu" id="nav-menu">
+                <a href="#home" class="nav-link active"><i class="fa-solid fa-house"></i> Home</a>
+                <a href="#recipes" class="nav-link"><i class="fa-solid fa-book-open"></i> Recipes</a>
+                <a href="#dashboard" class="nav-link auth-required"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+                <a href="#about" class="nav-link"><i class="fa-solid fa-circle-info"></i> About</a>
+                <a href="#contact" class="nav-link"><i class="fa-solid fa-envelope"></i> Contact</a>
+            </nav>
+
+            <div class="nav-actions">
+                <button class="btn btn-ai btn-icon-text" id="btn-open-ai">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> <span>AI Chef</span>
+                </button>
+                <button class="btn btn-secondary btn-icon-text" id="btn-add-recipe" style="display: none;">
+                    <i class="fa-solid fa-plus"></i> <span>Add Recipe</span>
+                </button>
+                <div class="user-profile-widget" id="user-widget">
+                    <button class="btn btn-primary" id="btn-open-auth">
+                        <i class="fa-solid fa-user"></i> <span>Login / Register</span>
+                    </button>
+                </div>
+                <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Main Content Area -->
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero-section">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <div class="badge-pill"><i class="fa-solid fa-wand-magic-sparkles"></i> April 2026 AI-Powered Release</div>
+                    <h1 class="hero-title">Master the Art of Cooking & <span class="gradient-text">Generate Recipes with AI</span></h1>
+                    <p class="hero-subtitle">Discover thousands of hand-crafted recipes, manage your full-stack PHP/MySQL database, or let our AI Chef create custom gourmet recipes based on ingredients in your fridge!</p>
+
+                    <div class="hero-search-box">
+                        <div class="search-input-group">
+                            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                            <input type="text" id="hero-search-input" placeholder="Search by dish name, ingredient (e.g. Pasta, Salmon, Berry)...">
+                            <button class="btn btn-primary btn-search" id="btn-hero-search">Find Recipes</button>
+                        </div>
+                        <div class="quick-tags">
+                            <span>Popular:</span>
+                            <button class="tag-btn" data-tag="Pasta">Pasta</button>
+                            <button class="tag-btn" data-tag="Breakfast">Pancakes</button>
+                            <button class="tag-btn" data-tag="Seafood">Salmon</button>
+                            <button class="tag-btn" data-tag="Healthy">Avocado</button>
+                        </div>
+                    </div>
+
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">1,250+</span>
+                            <span class="stat-label">Curated Recipes</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <span class="stat-number">AI Powered</span>
+                            <span class="stat-label">Recipe Engine</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <span class="stat-number">4.9 ★</span>
+                            <span class="stat-label">Community Rating</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="spotlight-card">
+                        <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80" alt="Gourmet Dish" id="hero-image">
+                        <div class="spotlight-overlay">
+                            <span class="badge badge-accent"><i class="fa-solid fa-brain"></i> AI Chef Pick</span>
+                            <h3>Artisanal Creamy Tomato Pasta</h3>
+                            <div class="recipe-meta-inline">
+                                <span><i class="fa-regular fa-clock"></i> 25 mins</span>
+                                <span><i class="fa-solid fa-signal"></i> Easy</span>
+                                <span><i class="fa-solid fa-star"></i> 4.9</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recipes Section -->
+        <section id="recipes" class="recipes-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <div>
+                        <span class="section-eyebrow">EXPLORE & FILTER</span>
+                        <h2 class="section-title">Explore Delicious Recipes</h2>
+                    </div>
+                    <div class="view-controls">
+                        <select id="sort-filter" class="select-input">
+                            <option value="newest">Sort by: Newest First</option>
+                            <option value="rating">Sort by: Highest Rated</option>
+                            <option value="time">Sort by: Fastest Prep Time</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="filters-bar">
+                    <div class="category-tabs" id="category-tabs">
+                        <button class="category-tab active" data-category="All">All Categories</button>
+                        <button class="category-tab" data-category="Breakfast">Breakfast</button>
+                        <button class="category-tab" data-category="Main Course">Main Course</button>
+                        <button class="category-tab" data-category="Seafood">Seafood</button>
+                        <button class="category-tab" data-category="Dessert">Dessert</button>
+                        <button class="category-tab" data-category="Healthy">Healthy & Vegan</button>
+                    </div>
+                </div>
+
+                <div class="recipe-grid" id="recipe-grid"></div>
+            </div>
+        </section>
+
+        <!-- Protected User Dashboard Section -->
+        <section id="dashboard" class="dashboard-section section-hidden">
+            <div class="section-container">
+                <div class="dashboard-banner">
+                    <div class="user-welcome">
+                        <div class="avatar-large" id="dash-avatar">C</div>
+                        <div>
+                            <h2 id="dash-user-name">Welcome back, Chef!</h2>
+                            <p id="dash-user-email">Manage your uploaded recipes, custom culinary collection, and personal bookmarks.</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 0.8rem;">
+                        <button class="btn btn-ai" id="btn-dash-ai">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> AI Generate
+                        </button>
+                        <button class="btn btn-primary" id="btn-dash-create">
+                            <i class="fa-solid fa-circle-plus"></i> Create Recipe
+                        </button>
+                    </div>
+                </div>
+
+                <div class="dashboard-stats-grid">
+                    <div class="dash-stat-card">
+                        <div class="stat-icon icon-orange"><i class="fa-solid fa-book-bookmark"></i></div>
+                        <div>
+                            <h3 id="stat-my-recipes-count">0</h3>
+                            <span>My Created Recipes</span>
+                        </div>
+                    </div>
+                    <div class="dash-stat-card">
+                        <div class="stat-icon icon-gold"><i class="fa-solid fa-heart"></i></div>
+                        <div>
+                            <h3 id="stat-favorites-count">0</h3>
+                            <span>Saved Favorites</span>
+                        </div>
+                    </div>
+                    <div class="dash-stat-card">
+                        <div class="stat-icon icon-green"><i class="fa-solid fa-server"></i></div>
+                        <div>
+                            <h3 id="stat-backend-status">PHP Connected</h3>
+                            <span>Backend API Sync</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-tabs">
+                    <button class="dash-tab active" data-tab="my-recipes">My Recipes (<span id="count-my-recipes">0</span>)</button>
+                    <button class="dash-tab" data-tab="my-favorites">Saved Favorites (<span id="count-favorites">0</span>)</button>
+                </div>
+
+                <div class="dashboard-content" id="dashboard-recipes-grid"></div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about-section">
+            <div class="section-container">
+                <div class="about-grid">
+                    <div class="about-text">
+                        <span class="section-eyebrow">OUR MISSION</span>
+                        <h2>Empowering Culinary Excellence Through Full-Stack PHP & AI Integration</h2>
+                        <p>Delicious Recipe Hub connects dynamic frontend web technologies with robust PHP 8.x PDO backend services and smart AI recipe synthesis.</p>
+                    </div>
+                    <div class="about-card-stack">
+                        <div class="tech-stack-card">
+                            <h3><i class="fa-solid fa-code"></i> Full-Stack Architecture</h3>
+                            <ul class="tech-tags-list">
+                                <li><i class="fa-brands fa-html5"></i> HTML5</li>
+                                <li><i class="fa-brands fa-css3-alt"></i> CSS3 Modern UI</li>
+                                <li><i class="fa-brands fa-js"></i> ES6 Async Fetch</li>
+                                <li><i class="fa-brands fa-php"></i> PHP 8.x PDO API</li>
+                                <li><i class="fa-solid fa-database"></i> MySQL Relational</li>
+                                <li><i class="fa-solid fa-wand-magic-sparkles"></i> AI Chef Generator</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section">
+            <div class="section-container">
+                <div class="contact-card">
+                    <div class="contact-info">
+                        <span class="section-eyebrow">GET IN TOUCH</span>
+                        <h2>Have Questions or AI Feature Ideas?</h2>
+                        <div class="contact-details">
+                            <div class="detail-line"><i class="fa-solid fa-envelope"></i> support@deliciousrecipehub.com</div>
+                            <div class="detail-line"><i class="fa-solid fa-globe"></i> github.com/BhavaniInduri/project-2</div>
+                        </div>
+                    </div>
+
+                    <form class="contact-form" id="contact-form">
+                        <div class="form-group">
+                            <label for="contact-name">Your Full Name</label>
+                            <input type="text" id="contact-name" class="form-input" placeholder="e.g. Bhavani Induri" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-email">Your Email Address</label>
+                            <input type="email" id="contact-email" class="form-input" placeholder="name@domain.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-message">Message</label>
+                            <textarea id="contact-message" class="form-input" rows="4" placeholder="Your message..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block"><i class="fa-solid fa-paper-plane"></i> Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- AI Chef Generator Modal -->
+    <div id="ai-modal" class="modal">
+        <div class="modal-content modal-medium">
+            <button class="modal-close" id="modal-close-ai">&times;</button>
+            <div class="modal-header">
+                <h3 class="gradient-text"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Recipe Generator & Assistant</h3>
+                <p>Enter the ingredients you have available in your kitchen, and our AI Chef will create an instant gourmet recipe!</p>
+            </div>
+            
+            <form id="ai-generator-form">
+                <div class="form-group">
+                    <label for="ai-ingredients-input">Available Ingredients in Your Pantry *</label>
+                    <textarea id="ai-ingredients-input" class="form-input" rows="3" placeholder="e.g. Chicken breast, garlic, heavy cream, spinach, mushrooms, pasta..." required></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="ai-cuisine-style">Cuisine Style</label>
+                        <select id="ai-cuisine-style" class="form-input">
+                            <option value="Italian">Italian</option>
+                            <option value="American">American</option>
+                            <option value="Asian">Asian Fusion</option>
+                            <option value="Mediterranean">Mediterranean</option>
+                            <option value="Mexican">Mexican</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ai-diet-type">Dietary Preference</label>
+                        <select id="ai-diet-type" class="form-input">
+                            <option value="Any">No Restriction</option>
+                            <option value="Vegetarian">Vegetarian</option>
+                            <option value="High Protein">High Protein</option>
+                            <option value="Low Carb">Low Carb / Keto</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-ai btn-block" id="btn-generate-recipe">
+                    <i class="fa-solid fa-brain"></i> Generate Gourmet Recipe with AI
+                </button>
+            </form>
+
+            <div id="ai-loading" class="ai-loading-box form-hidden">
+                <div class="ai-spinner"></div>
+                <p>AI Chef is analyzing ingredients & composing recipe instructions...</p>
+            </div>
+
+            <div id="ai-result-box" class="ai-result-container form-hidden">
+                <!-- AI Generated Recipe Content Injected Here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Recipe Detail Modal -->
+    <div id="recipe-modal" class="modal">
+        <div class="modal-content modal-large">
+            <button class="modal-close" id="modal-close-recipe">&times;</button>
+            <div class="recipe-detail-body" id="recipe-detail-content"></div>
+        </div>
+    </div>
+
+    <!-- Create / Edit Recipe Modal -->
+    <div id="recipe-form-modal" class="modal">
+        <div class="modal-content modal-medium">
+            <button class="modal-close" id="modal-close-form">&times;</button>
+            <div class="modal-header">
+                <h3 id="form-modal-title"><i class="fa-solid fa-utensils"></i> Add New Recipe</h3>
+            </div>
+            <form id="recipe-crud-form">
+                <input type="hidden" id="form-recipe-id" value="">
+                
+                <div class="form-group">
+                    <label for="form-title">Recipe Title *</label>
+                    <input type="text" id="form-title" class="form-input" placeholder="e.g. Tuscan Garlic Chicken" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="form-category">Category *</label>
+                        <select id="form-category" class="form-input" required>
+                            <option value="Breakfast">Breakfast</option>
+                            <option value="Main Course">Main Course</option>
+                            <option value="Seafood">Seafood</option>
+                            <option value="Dessert">Dessert</option>
+                            <option value="Healthy">Healthy & Vegan</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-prep-time">Prep Time (mins) *</label>
+                        <input type="number" id="form-prep-time" class="form-input" min="5" placeholder="30" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-difficulty">Difficulty *</label>
+                        <select id="form-difficulty" class="form-input" required>
+                            <option value="Easy">Easy</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Hard">Hard</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Recipe Image (Upload File or URL) *</label>
+                    <div class="image-upload-wrapper">
+                        <input type="file" id="form-image-file" accept="image/*" class="file-input-hidden">
+                        <button type="button" class="btn btn-outline" id="btn-trigger-file-upload">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> Choose Image File
+                        </button>
+                        <span class="divider-text">OR</span>
+                        <input type="url" id="form-image-url" class="form-input" placeholder="Paste Image URL (https://...)">
+                    </div>
+                    <div class="image-preview-container">
+                        <img id="form-image-preview" src="" alt="Preview" class="image-preview-hidden">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="form-ingredients">Ingredients (One per line) *</label>
+                    <textarea id="form-ingredients" class="form-input" rows="4" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="form-instructions">Instructions (Step by step) *</label>
+                    <textarea id="form-instructions" class="form-input" rows="5" required></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="btn-cancel-form">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="btn-save-recipe"><i class="fa-solid fa-floppy-disk"></i> Save Recipe</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content modal-small">
+            <button class="modal-close" id="modal-close-auth">&times;</button>
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="auth-tab-login">Login</button>
+                <button class="auth-tab" id="auth-tab-register">Register</button>
+            </div>
+
+            <form id="login-form" class="auth-form">
+                <h3 class="auth-title">Welcome Back Chef</h3>
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" class="form-input" value="chef@delicioushub.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" class="form-input" value="password123" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
+            </form>
+
+            <form id="register-form" class="auth-form form-hidden">
+                <h3 class="auth-title">Create Account</h3>
+                <div class="form-group">
+                    <label for="reg-name">Full Name</label>
+                    <input type="text" id="reg-name" class="form-input" placeholder="Bhavani Induri" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-email">Email</label>
+                    <input type="email" id="reg-email" class="form-input" placeholder="bhavani@delicioushub.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-password">Password</label>
+                    <input type="password" id="reg-password" class="form-input" required minlength="6">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block"><i class="fa-solid fa-user-plus"></i> Create Account</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Application Script -->
+    <script src="app.js"></script>
+</body>
+</html>
